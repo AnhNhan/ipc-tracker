@@ -4,11 +4,6 @@ export class Entity
   id: number;
 }
 
-export interface Exportable<T>
-{
-  export(): T;
-}
-
 export class Country extends Entity
 {
   name: string;
@@ -16,7 +11,10 @@ export class Country extends Entity
   /// Allegieance at the beginning of the game
   allegiance: Allegiance;
   garrison = 0;
+}
 
+export class CountryIngame extends Country
+{
   allegianceCurrent?: Allegiance;
   currentGarrison?: number;
 
@@ -42,6 +40,6 @@ export class Seafield extends Entity
 }
 
 export type Neutrality = 'strict' | 'pro-axis' | 'pro-allies';
-export type Allegiance = Neutrality | Faction;
+export type Allegiance = Neutrality | Nation;
 export type Faction = 'Allies' | 'Axis';
 

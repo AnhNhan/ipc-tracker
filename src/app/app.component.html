@@ -1,9 +1,10 @@
 <!--The content below is only a placeholder and can be replaced.-->
 <div>
   <h1>
-    {{ title }}!
+    {{ title }}
   </h1>
+  <span class="save-button btn btn-primary" (click)="saveAll()">save all</span>
+  <span class="save-button btn btn-primary" (click)="exportAll()">export all</span>
   <app-nations></app-nations>
   <app-countries></app-countries>
 </div>
-

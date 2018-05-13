@@ -1,6 +1,9 @@
 import { Component, OnInit, Optional } from '@angular/core';
 import { Country, Nation } from '../model';
 import { nations as NATIONS } from '../nations';
+import { CountryService } from '../country.service';
+import { NationService } from '../nation.service';
+import * as _ from 'lodash';
 
 @Component({
   selector: 'app-countries',
@@ -13,15 +16,31 @@ export class CountriesComponent implements OnInit {
 
   lastId = 0;
 
-  public countries: Country[] = [];
-  public nations: Nation[] = NATIONS;
+  public countries: Country[];
+  public nations: Nation[];
 
   constructor(
+    private countryService: CountryService,
+    private nationService: NationService,
   ) {
-    this.lastId = Math.max.apply(Math, this.countries.map(function (o) { return o.id; }));
   }
 
   ngOnInit() {
+    this.getCountries();
+    this.getNations();
+  }
+
+  getCountries() {
+    this.countryService.getCountries().subscribe((countries => {
+      this.countries = countries;
+      if (this.countries.length) {
+        this.lastId = Math.max.apply(Math, this.countries.map(function (o) { return o.id; }));
+      }
+    }));
+  }
+
+  getNations() {
+    this.nationService.getNations().subscribe(nations => this.nations = nations);
   }
 
   createNewCountry()
@@ -34,11 +53,68 @@ export class CountriesComponent implements OnInit {
       garrison: 0,
     };
     this.countries.push(this.selectedCountry);
+    this.countryService.saveCountries();
   }
 
   selectCountry(country: Country)
   {
     this.selectedCountry = country;
+    this.countryService.saveCountries();
+  }
+
+  unselectCountry()
+  {
+    this.selectedCountry = null;
+  }
+
+  selectedIPCPlus()
+  {
+    if (this.selectedCountry)
+    {
+      this.selectedCountry.ipc++;
+    }
+  }
+
+  selectedIPCMinus()
+  {
+    if (this.selectedCountry)
+    {
+      this.selectedCountry.ipc--;
+    }
+  }
+
+  setIPC(ipc: number)
+  {
+    if (this.selectedCountry)
+    {
+      this.selectedCountry.ipc = ipc;
+    }
+  }
+
+  setGarrison(garrison: number)
+  {
+    if (this.selectedCountry)
+    {
+      this.selectedCountry.garrison = garrison;
+    }
+  }
+
+  setAllegiance(allegiance: string)
+  {
+    if (!this.selectedCountry)
+    {
+      return;
+    }
+
+    if (allegiance == 'strict' || allegiance == 'pro-axis' || allegiance == 'pro-allies') {
+      this.selectedCountry.allegiance = allegiance;
+      return;
+    }
+    let nation = this.nations.find(nation => nation.name == allegiance);
+    if (!nation) {
+      throw 'nation not found';
+    }
+    this.selectedCountry.allegiance = nation;
   }
 
 }

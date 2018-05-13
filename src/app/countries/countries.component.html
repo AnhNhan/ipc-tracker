@@ -1,25 +1,41 @@
 <h2>Countries</h2>
-<span class="add-country-button" (click)="createNewCountry()">+ add country +</span>
+<span class="add-country-button btn btn-primary" (click)="createNewCountry()">add country</span>
 <div class="countrycontainer">
   <ul class="countrylist">
-    <li *ngFor="let country of countries" (click)="selectCountry(country)" [class.selected]="country == selectedCountry">{{country.name}}</li>
+    <li
+      *ngFor="let country of countries"
+      (click)="selectCountry(country)"
+      [class.selected]="country == selectedCountry"
+    >
+      {{country.name}} - {{country.ipc}} <i class="fas fa-cogs"></i> <em>{{country.allegiance | allegianceName}}</em> <span *ngIf="country.garrison">({{country.garrison}} <i class="fas fa-fighter-jet"></i>)</span>
+    </li>
   </ul>
   <div class="country" *ngIf="selectedCountry">
-    <h3><input type="text" [(ngModel)]="selectedCountry.name"></h3>
+    <h3>{{selectCountry.name}}</h3>
     <dl>
       <dt>Id</dt>
       <dd>{{selectedCountry.id}}</dd>
+      <dt>Name</dt>
+      <dd><input type="text" [(ngModel)]="selectedCountry.name"></dd>
       <dt>IPC Value</dt>
-      <dd><input type="number" [(ngModel)]="selectedCountry.ipc"></dd>
+      <dd>
+        <input type="number" [(ngModel)]="selectedCountry.ipc">
+        <span class="btn btn-info" (click)="selectedIPCPlus()">+</span>
+        <span class="btn btn-info" (click)="selectedIPCMinus()">-</span>
+        <span class="btn btn-info" *ngFor="let num of [0,1,2,3,4,5,6,7,8,9,10]" (click)="setIPC(num)" [class.active]="selectedCountry.ipc == num">{{num}}</span>
+      </dd>
       <dt>Allegiance (start)</dt>
-      <dd><select [(ngModel)]="selectedCountry.allegiance">
-          <option value="pro-axis">Pro-Axis</option>
-          <option value="pro-allies">Pro-Allies</option>
-          <option value="strict">Strict neutral</option>
-          <option *ngFor="let nation of nations" [ngValue]="nation">{{nation.name}}</option>
-      </select></dd>
+      <dd class="allegiance-selector">
+        <span class="btn btn-secondary" (click)="setAllegiance('pro-axis')" [class.active]="'pro-axis' == selectedCountry.allegiance">Pro-Axis</span>
+        <span class="btn btn-secondary" (click)="setAllegiance('pro-allies')" [class.active]="'pro-allies' == selectedCountry.allegiance">Pro-Allies</span>
+        <span class="btn btn-secondary" (click)="setAllegiance('strict')" [class.active]="'strict' == selectedCountry.allegiance">Strict neutral</span>
+        <span class="btn btn-secondary" *ngFor="let nation of nations" (click)="setAllegiance(nation.name)" [class.active]="nation.name == selectedCountry.allegiance.name">{{nation.name}}</span>
+      </dd>
       <dt>Levy size (start)</dt>
-      <dd><input type="number" [(ngModel)]="selectedCountry.garrison"></dd>
+      <dd>
+        <input type="number" [(ngModel)]="selectedCountry.garrison">
+        <span class="btn btn-info" *ngFor="let num of [0,1,2,3,4,5,6]" (click)="setGarrison(num)" [class.active]="selectedCountry.garrison == num">{{num}}</span>
+      </dd>
     </dl>
   </div>
 </div>
