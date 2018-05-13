@@ -1,0 +1,25 @@
+<h2>Countries</h2>
+<span class="add-country-button" (click)="createNewCountry()">+ add country +</span>
+<div class="countrycontainer">
+  <ul class="countrylist">
+    <li *ngFor="let country of countries" (click)="selectCountry(country)" [class.selected]="country == selectedCountry">{{country.name}}</li>
+  </ul>
+  <div class="country" *ngIf="selectedCountry">
+    <h3><input type="text" [(ngModel)]="selectedCountry.name"></h3>
+    <dl>
+      <dt>Id</dt>
+      <dd>{{selectedCountry.id}}</dd>
+      <dt>IPC Value</dt>
+      <dd><input type="number" [(ngModel)]="selectedCountry.ipc"></dd>
+      <dt>Allegiance (start)</dt>
+      <dd><select [(ngModel)]="selectedCountry.allegiance">
+          <option value="pro-axis">Pro-Axis</option>
+          <option value="pro-allies">Pro-Allies</option>
+          <option value="strict">Strict neutral</option>
+          <option *ngFor="let nation of nations" [ngValue]="nation">{{nation.name}}</option>
+      </select></dd>
+      <dt>Levy size (start)</dt>
+      <dd><input type="number" [(ngModel)]="selectedCountry.garrison"></dd>
+    </dl>
+  </div>
+</div>

@@ -1,0 +1,28 @@
+
+.nationlist
+{
+  display: flex;
+}
+
+.nation
+{
+}
+
+.nation + .nation
+{
+  margin-left: 1em;
+}
+
+.nation > h3,
+.nation > dl
+{
+  margin: 0;
+}
+
+.nation > dl
+{
+}
+
+.nation > dl > dd
+{
+}

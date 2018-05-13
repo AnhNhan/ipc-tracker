@@ -1,0 +1,15 @@
+.countrycontainer
+{
+  display: flex;
+}
+
+.countrylist
+{
+  flex-basis: 400px;
+  margin-right: 2em;
+}
+
+.countrylist > .selected
+{
+  background: yellowgreen;
+}
