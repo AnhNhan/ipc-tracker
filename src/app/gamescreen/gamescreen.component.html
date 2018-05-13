@@ -1,3 +1,18 @@
-<p>
-  gamescreen works!
-</p>
+<h2>Active game</h2>
+
+<div class="spinner" *ngIf="loadCounter">
+    <i class="fas fa-spinner fa-spin"></i>
+</div>
+
+<div class="gamecontents" *ngIf="!loadCounter">
+  <div class="columns">
+    <div class="column" *ngFor="let column of columnValues">
+      <h3>{{column.name}}</h3>
+      <div class="countries">
+        <div class="country" *ngFor="let country of column.countries">
+          <h4>{{country.name}}</h4>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

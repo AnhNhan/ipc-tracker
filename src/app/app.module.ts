@@ -10,6 +10,8 @@ import { SeafieldsComponent } from './seafields/seafields.component';
 import { UnitsComponent } from './units/units.component';
 import { AllegianceNamePipe } from './allegiance-name.pipe';
 import { GamescreenComponent } from './gamescreen/gamescreen.component';
+import { AppRoutingModule } from './/app-routing.module';
+import { EditorComponent } from './editor/editor.component';
 
 @NgModule({
   declarations: [
@@ -19,12 +21,14 @@ import { GamescreenComponent } from './gamescreen/gamescreen.component';
     SeafieldsComponent,
     UnitsComponent,
     AllegianceNamePipe,
-    GamescreenComponent
+    GamescreenComponent,
+    EditorComponent
   ],
   imports: [
     BrowserModule,
     FormsModule,
     PersistenceModule,
+    AppRoutingModule,
   ],
   providers: [],
   bootstrap: [AppComponent]

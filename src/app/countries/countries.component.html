@@ -7,7 +7,14 @@
       (click)="selectCountry(country)"
       [class.selected]="country == selectedCountry"
     >
-      {{country.name}} - {{country.ipc}} <i class="fas fa-cogs"></i> <em>{{country.allegiance | allegianceName}}</em> <span *ngIf="country.garrison">({{country.garrison}} <i class="fas fa-fighter-jet"></i>)</span>
+      {{country.name}} -
+      <em>{{country.allegiance | allegianceName}}</em>
+      &nbsp;
+      <span *ngIf="country.ipc">{{country.ipc}} <i class="fas fa-cogs"></i>&nbsp;</span>
+      <span *ngIf="country.industry_size">({{country.industry_size}} <i class="fas fa-industry"></i>)&nbsp;</span>
+      <span *ngIf="country.has_airfield"><i class="fas fa-plane"></i>&nbsp;</span>
+      <span *ngIf="country.has_seaport"><i class="fas fa-anchor"></i>&nbsp;</span>
+      <span *ngIf="country.garrison">({{country.garrison}} <i class="fas fa-male"></i>)&nbsp;</span>
     </li>
   </ul>
   <div class="country" *ngIf="selectedCountry">
@@ -35,6 +42,20 @@
       <dd>
         <input type="number" [(ngModel)]="selectedCountry.garrison">
         <span class="btn btn-info" *ngFor="let num of [0,1,2,3,4,5,6]" (click)="setGarrison(num)" [class.active]="selectedCountry.garrison == num">{{num}}</span>
+      </dd>
+      <dt>Has Airfield</dt>
+      <dd>
+          <span class="btn btn-secondary" (click)="setAirfield(true)" [class.active]="selectedCountry.has_airfield">Yes</span>
+          <span class="btn btn-secondary" (click)="setAirfield(false)" [class.active]="!selectedCountry.has_airfield">No</span>
+      </dd>
+      <dt>Has Seaport</dt>
+      <dd>
+          <span class="btn btn-secondary" (click)="setSeaport(true)" [class.active]="selectedCountry.has_seaport">Yes</span>
+          <span class="btn btn-secondary" (click)="setSeaport(false)" [class.active]="!selectedCountry.has_seaport">No</span>
+      </dd>
+      <dt>Industry Size</dt>
+      <dd>
+          <span class="btn btn-info" *ngFor="let num of [0,3,10]" (click)="setIndustry(num)" [class.active]="selectedCountry.industry_size == num">{{num}}</span>
       </dd>
     </dl>
   </div>

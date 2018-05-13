@@ -51,6 +51,9 @@ export class CountriesComponent implements OnInit {
       ipc: 1,
       allegiance: 'strict',
       garrison: 0,
+      has_airfield: false,
+      has_seaport: false,
+      industry_size: 0,
     };
     this.countries.push(this.selectedCountry);
     this.countryService.saveCountries();
@@ -115,6 +118,33 @@ export class CountriesComponent implements OnInit {
       throw 'nation not found';
     }
     this.selectedCountry.allegiance = nation;
+  }
+
+  setIndustry(num: 0 | 3 | 10)
+  {
+    if (!this.selectedCountry)
+    {
+      return;
+    }
+
+    this.selectedCountry.industry_size = num;
+  }
+
+  setAirfield(val: boolean)
+  {
+    if (this.selectedCountry)
+    {
+      this.selectedCountry.has_airfield = val;
+      console.log(this.selectedCountry.has_airfield);
+    }
+  }
+
+  setSeaport(val: boolean)
+  {
+    if (this.selectedCountry)
+    {
+      this.selectedCountry.has_seaport = val;
+    }
   }
 
 }

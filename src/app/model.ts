@@ -1,4 +1,6 @@
 
+import * as _ from 'lodash';
+
 export class Entity
 {
   id: number;
@@ -11,6 +13,10 @@ export class Country extends Entity
   /// Allegieance at the beginning of the game
   allegiance: Allegiance;
   garrison = 0;
+
+  has_airfield: boolean;
+  has_seaport: boolean;
+  industry_size: 0 | 3 | 10;
 }
 
 export class CountryIngame extends Country
@@ -18,9 +24,24 @@ export class CountryIngame extends Country
   allegianceCurrent?: Allegiance;
   currentGarrison?: number;
 
-  constructor()
+  airfield: Building;
+  seaport: Building;
+  industry: Building;
+
+  constructor(country: Country)
   {
     super();
+
+    this.id = country.id;
+    this.name = country.name;
+    this.ipc = country.ipc;
+    this.allegiance = country.allegiance;
+    this.garrison = country.garrison;
+
+    this.airfield = new Building(country.has_airfield ? 3 : 0);
+    this.seaport = new Building(country.has_seaport ? 3 : 0);
+    this.industry = new Building(country.industry_size);
+
     this.currentGarrison = this.garrison;
     this.allegianceCurrent = this.allegiance;
   }
@@ -30,6 +51,26 @@ export class Nation extends Entity
 {
   name: string;
   faction: Faction;
+}
+
+export class NationIngame extends Nation
+{
+  constructor(nation: Nation)
+  {
+    super();
+    this.id = nation.id;
+    this.name = nation.name;
+    this.faction = nation.faction;
+  }
+}
+
+export class Column
+{
+  constructor(
+    public name: string,
+    public nation: Nation|null,
+    public countries: CountryIngame[],
+  ) {}
 }
 
 export class Seafield extends Entity
@@ -43,3 +84,40 @@ export type Neutrality = 'strict' | 'pro-axis' | 'pro-allies';
 export type Allegiance = Neutrality | Nation;
 export type Faction = 'Allies' | 'Axis';
 
+export class Building
+{
+  public current: number;
+
+  constructor(
+    public max: number
+  ) {
+    this.current = max;
+  }
+
+  upgrade(num: number)
+  {
+    if (this.current != this.max)
+    {
+      console.log('Could not upgrade building');
+      return;
+    }
+
+    this.current = num;
+    this.max = num;
+  }
+
+  get canBuild()
+  {
+    return this.current > 0;
+  }
+
+  repair(num: number)
+  {
+    this.current = _.min([ this.max, this.current + num ]);
+  }
+
+  damage(num: number)
+  {
+    this.current = _.max([ this.max * -2, this.current - num ]);
+  }
+}
