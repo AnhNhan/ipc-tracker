@@ -24,6 +24,7 @@
     "angular-persistence": "^1.0.1",
     "core-js": "^2.5.4",
     "lodash": "^4.17.10",
+    "ng2-dnd": "^5.0.2",
     "rxjs": "^6.0.0",
     "zone.js": "^0.8.26"
   },

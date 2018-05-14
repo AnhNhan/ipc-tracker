@@ -2,6 +2,7 @@ import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { PersistenceModule } from 'angular-persistence';
+import { DndModule } from 'ng2-dnd';
 
 import { AppComponent } from './app.component';
 import { CountriesComponent } from './countries/countries.component';
@@ -31,6 +32,7 @@ import { BuildingComponent } from './building/building.component';
     FormsModule,
     PersistenceModule,
     AppRoutingModule,
+    DndModule.forRoot(),
   ],
   providers: [],
   bootstrap: [AppComponent]

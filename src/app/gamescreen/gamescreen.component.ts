@@ -55,4 +55,15 @@ export class GamescreenComponent implements OnInit {
     return _.values(this.columns);
   }
 
+  simpleDrop($event, to_column_name)
+  {
+    let country_id = $event.dragData;
+    let country = this.countries.find(country => country.id == country_id);
+    let old_column = this.columns[AllegianceNamePipe.prototype.transform(country.allegiance)];
+    let new_column = this.columns[to_column_name];
+
+    new_column.countries = _.concat(new_column.countries, country);
+    old_column.countries = old_column.countries.filter(country => country.id != country_id);
+  }
+
 }

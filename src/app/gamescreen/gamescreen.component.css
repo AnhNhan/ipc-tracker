@@ -21,6 +21,11 @@
   min-width: 220px;
 }
 
+.column > .countries
+{
+  flex: 1;
+}
+
 .country
 {
   border: #dddddd 2px solid;
