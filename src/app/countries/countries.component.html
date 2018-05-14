@@ -3,7 +3,7 @@
 <div class="countrycontainer">
   <ul class="countrylist">
     <li
-      *ngFor="let country of countries"
+      *ngFor="let country of (countries | orderCountries)"
       (click)="selectCountry(country)"
       [class.selected]="country == selectedCountry"
     >
@@ -66,7 +66,7 @@
       <dt>Game Region (grouping)</dt>
       <dd>
         <span class="btn btn-secondary"
-          *ngFor="let region of [ 'Europe', 'North America', 'South Africa', 'North Africa', 'South Africa', 'West Russia', 'East Russia / Mongolia', 'China', 'West Asia', 'East Asia', 'Oceania / Pacific' ]"
+          *ngFor="let region of [ 'Europe', 'North America', 'South America', 'North Africa', 'South Africa', 'West Russia', 'East Russia / Mongolia', 'China', 'West Asia', 'East Asia', 'Oceania / Pacific' ]"
           (click)="setRegion(region)"
           [class.active]="region == selectedCountry.gameRegion">
           {{region}}

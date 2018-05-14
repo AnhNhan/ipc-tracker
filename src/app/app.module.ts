@@ -14,6 +14,7 @@ import { GamescreenComponent } from './gamescreen/gamescreen.component';
 import { AppRoutingModule } from './/app-routing.module';
 import { EditorComponent } from './editor/editor.component';
 import { BuildingComponent } from './building/building.component';
+import { OrderCountriesPipe } from './order-countries.pipe';
 
 @NgModule({
   declarations: [
@@ -25,7 +26,8 @@ import { BuildingComponent } from './building/building.component';
     AllegianceNamePipe,
     GamescreenComponent,
     EditorComponent,
-    BuildingComponent
+    BuildingComponent,
+    OrderCountriesPipe
   ],
   imports: [
     BrowserModule,

@@ -42,6 +42,10 @@ export class CountryIngame extends Country
     this.allegiance = country.allegiance;
     this.garrison = country.garrison;
 
+    this.gameRegion = country.gameRegion;
+    this.theatre = country.theatre;
+    this.hasCapital = country.hasCapital;
+
     this.airfield = new Building(country.has_airfield ? 3 : 0, 'plane');
     this.seaport = new Building(country.has_seaport ? 3 : 0, 'anchor');
     this.industry = new Building(country.industry_size, 'industry');
@@ -85,6 +89,20 @@ export class Column
   {
     return _.sum(_.map(this.countries, 'ipc'));
   }
+
+  get theatres()
+  {
+    let groups = _.groupBy(this.countries, 'theatre');
+    return {
+      groups,
+      keys: Object.keys(groups),
+    };
+  }
+}
+
+function groupByRegion(countries: Country[])
+{
+  return _.groupBy(countries, 'gameRegion');
 }
 
 export class Seafield extends Entity
@@ -98,7 +116,7 @@ export type Neutrality = 'strict' | 'pro-axis' | 'pro-allies';
 export type Allegiance = Neutrality | Nation;
 export type Faction = 'Allies' | 'Axis';
 export type GameHalf = 'Europe' | 'Pacific';
-export type GameRegion = 'Europe' | 'North America' | 'South Africa' | 'North Africa' | 'South Africa' | 'West Russia' | 'East Russia / Mongolia' | 'China' | 'West Asia' | 'East Asia' | 'Oceania / Pacific';
+export type GameRegion = 'Europe' | 'North America' | 'South America' | 'North Africa' | 'South Africa' | 'West Russia' | 'East Russia / Mongolia' | 'China' | 'West Asia' | 'East Asia' | 'Oceania / Pacific';
 
 export class Building
 {

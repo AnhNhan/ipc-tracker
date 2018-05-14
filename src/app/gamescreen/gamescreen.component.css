@@ -18,12 +18,13 @@
 .column > h3
 {
   white-space: nowrap;
-  min-width: 220px;
+  min-width: 240px;
 }
 
-.column > .countries
+.countries
 {
-  flex: 1;
+  /* flex: 1; */
+  /* min-height: 200px; */
 }
 
 .country
@@ -39,9 +40,13 @@
   margin-top: 5px;
 }
 
-.country > h4
+.country > h5
 {
   font-size: 1.1em;
+}
+.country > h5 > .small
+{
+  font-size: 0.5;
 }
 
 .countrycontents
