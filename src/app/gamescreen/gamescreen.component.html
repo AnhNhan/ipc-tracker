@@ -7,10 +7,20 @@
 <div class="gamecontents" *ngIf="!loadCounter">
   <div class="columns">
     <div class="column" *ngFor="let column of columnValues">
-      <h3>{{column.name}}</h3>
+      <h3>{{column.name}} - {{column.totalIPC}} <i class="fas fa-cogs"></i></h3>
       <div class="countries">
         <div class="country" *ngFor="let country of column.countries">
           <h4>{{country.name}}</h4>
+          <div class="countrycontents">
+              <span *ngIf="country.ipc">{{country.ipc}}&nbsp;<i class="fas fa-cogs"></i>&nbsp;</span>
+              <span *ngIf="country.currentGarrison">{{country.currentGarrison}} <i class="fas fa-male"></i>&nbsp;</span>
+              <span class="dummy"></span>
+              <div class="buildings">
+                  <app-building [building]="country.industry" [stages]="[ 3, 10 ]"></app-building>
+                  <app-building [building]="country.airfield"></app-building>
+                  <app-building [building]="country.seaport"></app-building>
+              </div>
+          </div>
         </div>
       </div>
     </div>

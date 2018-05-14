@@ -1,0 +1,23 @@
+<div class="building" (click)="toggleDialog($event)" [class.faded]="building.max == 0" [class.damaged]="building.isDamaged" [class.destroyed]="building.max && building.current <= 0">
+  <span class="value" *ngIf="building.max && stages.length > 1">
+    <span *ngIf="building.isDamaged">{{building.current}} / </span>
+    {{building.max}}&nbsp;
+  </span>
+  <span *ngIf="building.isDamaged && stages.length == 1">{{building.current}} </span>
+  <i [ngClass]="building.type ? 'fas fa-' + building.type : 'fas fa-times'"></i>
+
+  <div class="building-dialog" *ngIf="dialogVisible">
+    <span *ngIf="building.max">
+      <span *ngIf="!building.isDamaged">
+        <button *ngFor="let stage of availableStages" (click)="building.upgrade(stage)"><i class="fas fa-industry"></i> {{stage}}</button>
+      </span>
+      <button (click)="building.damage(1)" *ngIf="building.canBeDamaged" class="no-close"><i class="fas fa-minus"></i></button>
+      <button (click)="building.repair(1)" *ngIf="building.isDamaged" class="no-close"><i class="fas fa-plus"></i></button>
+      <button (click)="building.repairFully()" *ngIf="building.isDamaged"><i class="fas fa-calendar-plus"></i></button>
+    </span>
+    <span *ngIf="!building.max">
+      <button *ngFor="let num of stages" (click)="building.upgrade(num)"><i class="fas fa-wrench"></i><span *ngIf="stages.length > 1">&nbsp;{{num}}</span></button>
+    </span>
+  </div>
+
+</div>

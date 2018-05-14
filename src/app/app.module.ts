@@ -12,6 +12,7 @@ import { AllegianceNamePipe } from './allegiance-name.pipe';
 import { GamescreenComponent } from './gamescreen/gamescreen.component';
 import { AppRoutingModule } from './/app-routing.module';
 import { EditorComponent } from './editor/editor.component';
+import { BuildingComponent } from './building/building.component';
 
 @NgModule({
   declarations: [
@@ -22,7 +23,8 @@ import { EditorComponent } from './editor/editor.component';
     UnitsComponent,
     AllegianceNamePipe,
     GamescreenComponent,
-    EditorComponent
+    EditorComponent,
+    BuildingComponent
   ],
   imports: [
     BrowserModule,

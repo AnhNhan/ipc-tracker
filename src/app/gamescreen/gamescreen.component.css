@@ -1,0 +1,53 @@
+.columns
+{
+  display: flex;
+}
+
+.column
+{
+  flex-basis: 200px;
+  display: flex;
+  flex-direction: column;
+}
+
+.column + .column
+{
+  margin-left: 5px;
+}
+
+.column > h3
+{
+  white-space: nowrap;
+  min-width: 220px;
+}
+
+.country
+{
+  border: #dddddd 2px solid;
+  background-color: #eeeeee;
+  border-radius: 5px;
+  padding: 5px;
+}
+
+.country + .country
+{
+  margin-top: 5px;
+}
+
+.country > h4
+{
+  font-size: 1.1em;
+}
+
+.countrycontents
+{
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+}
+
+.buildings
+{
+  align-self: flex-end;
+  display: flex;
+}

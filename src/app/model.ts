@@ -38,12 +38,17 @@ export class CountryIngame extends Country
     this.allegiance = country.allegiance;
     this.garrison = country.garrison;
 
-    this.airfield = new Building(country.has_airfield ? 3 : 0);
-    this.seaport = new Building(country.has_seaport ? 3 : 0);
-    this.industry = new Building(country.industry_size);
+    this.airfield = new Building(country.has_airfield ? 3 : 0, 'plane');
+    this.seaport = new Building(country.has_seaport ? 3 : 0, 'anchor');
+    this.industry = new Building(country.industry_size, 'industry');
 
     this.currentGarrison = this.garrison;
     this.allegianceCurrent = this.allegiance;
+  }
+
+  removeGarrison()
+  {
+    this.currentGarrison = 0;
   }
 }
 
@@ -70,7 +75,12 @@ export class Column
     public name: string,
     public nation: Nation|null,
     public countries: CountryIngame[],
-  ) {}
+  ) { }
+
+  get totalIPC()
+  {
+    return _.sum(_.map(this.countries, 'ipc'));
+  }
 }
 
 export class Seafield extends Entity
@@ -89,7 +99,9 @@ export class Building
   public current: number;
 
   constructor(
-    public max: number
+    public max: number,
+    /// coincidentally font awesome icon name
+    public type: string,
   ) {
     this.current = max;
   }
@@ -106,9 +118,24 @@ export class Building
     this.max = num;
   }
 
+  get maxDamage()
+  {
+    return this.max * -2;
+  }
+
   get canBuild()
   {
     return this.current > 0;
+  }
+
+  get isDamaged()
+  {
+    return this.current < this.max;
+  }
+
+  get canBeDamaged()
+  {
+    return this.current > this.maxDamage;
   }
 
   repair(num: number)
@@ -116,8 +143,13 @@ export class Building
     this.current = _.min([ this.max, this.current + num ]);
   }
 
+  repairFully()
+  {
+    this.current = this.max;
+  }
+
   damage(num: number)
   {
-    this.current = _.max([ this.max * -2, this.current - num ]);
+    this.current = _.max([ this.maxDamage, this.current - num ]);
   }
 }

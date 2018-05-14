@@ -1,0 +1,44 @@
+.building
+{
+  padding: 2px 8px;
+  border: #dddddd 1px solid;
+  margin-left: 3px;
+  border-radius: 3px;
+  position: relative;
+  white-space: nowrap;
+}
+
+.building.faded
+{
+  color: rgba(0, 0, 0, 0.3);
+}
+
+.building.damaged
+{
+  border-color: #d4635b;
+}
+
+.building.destroyed
+{
+  background-color: #d4635b;
+}
+
+.building-dialog
+{
+  position: absolute;
+  padding: 5px;
+  padding-left: 2px;
+  background-color: #dedede;
+  border: #dddddd 1px solid;
+  z-index: 100;
+  white-space: nowrap;
+  border-radius: 3px;
+
+  top: calc(100% + 5px);
+}
+
+.building-dialog button
+{
+  white-space: nowrap;
+  margin-left: 3px;
+}
