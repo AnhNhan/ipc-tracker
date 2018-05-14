@@ -1,5 +1,5 @@
 import { Component, OnInit, Optional } from '@angular/core';
-import { Country, Nation } from '../model';
+import { Country, Nation, GameRegion, GameHalf } from '../model';
 import { nations as NATIONS } from '../nations';
 import { CountryService } from '../country.service';
 import { NationService } from '../nation.service';
@@ -54,6 +54,9 @@ export class CountriesComponent implements OnInit {
       has_airfield: false,
       has_seaport: false,
       industry_size: 0,
+      gameRegion: 'Europe',
+      theatre: 'Europe',
+      hasCapital: false,
     };
     this.countries.push(this.selectedCountry);
     this.countryService.saveCountries();
@@ -144,6 +147,30 @@ export class CountriesComponent implements OnInit {
     if (this.selectedCountry)
     {
       this.selectedCountry.has_seaport = val;
+    }
+  }
+
+  setRegion(val: GameRegion)
+  {
+    if (this.selectedCountry)
+    {
+      this.selectedCountry.gameRegion = val;
+    }
+  }
+
+  setTheatre(val: GameHalf)
+  {
+    if (this.selectedCountry)
+    {
+      this.selectedCountry.theatre = val;
+    }
+  }
+
+  setCapital(val: boolean)
+  {
+    if (this.selectedCountry)
+    {
+      this.selectedCountry.hasCapital = val;
     }
   }
 

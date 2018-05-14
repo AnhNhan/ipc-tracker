@@ -15,6 +15,7 @@
       <span *ngIf="country.has_airfield"><i class="fas fa-plane"></i>&nbsp;</span>
       <span *ngIf="country.has_seaport"><i class="fas fa-anchor"></i>&nbsp;</span>
       <span *ngIf="country.garrison">({{country.garrison}} <i class="fas fa-male"></i>)&nbsp;</span>
+      <span *ngIf="country.hasCapital"><i class="fas fa-star"></i>&nbsp;</span>
     </li>
   </ul>
   <div class="country" *ngIf="selectedCountry">
@@ -56,6 +57,25 @@
       <dt>Industry Size</dt>
       <dd>
           <span class="btn btn-info" *ngFor="let num of [0,3,10]" (click)="setIndustry(num)" [class.active]="selectedCountry.industry_size == num">{{num}}</span>
+      </dd>
+      <dt>Has Capital</dt>
+      <dd>
+          <span class="btn btn-secondary" (click)="setCapital(true)" [class.active]="selectedCountry.hasCapital">Yes</span>
+          <span class="btn btn-secondary" (click)="setCapital(false)" [class.active]="!selectedCountry.hasCapital">No</span>
+      </dd>
+      <dt>Game Region (grouping)</dt>
+      <dd>
+        <span class="btn btn-secondary"
+          *ngFor="let region of [ 'Europe', 'North America', 'South Africa', 'North Africa', 'South Africa', 'West Russia', 'East Russia / Mongolia', 'China', 'West Asia', 'East Asia', 'Oceania / Pacific' ]"
+          (click)="setRegion(region)"
+          [class.active]="region == selectedCountry.gameRegion">
+          {{region}}
+        </span>
+      </dd>
+      <dt>Theatre</dt>
+      <dd>
+          <span class="btn btn-secondary" (click)="setTheatre('Europe')" [class.active]="'Europe' == selectedCountry.theatre">Europe</span>
+          <span class="btn btn-secondary" (click)="setTheatre('Pacific')" [class.active]="'Pacific' == selectedCountry.theatre">Pacific</span>
       </dd>
     </dl>
   </div>

@@ -17,6 +17,10 @@ export class Country extends Entity
   has_airfield: boolean;
   has_seaport: boolean;
   industry_size: 0 | 3 | 10;
+
+  gameRegion: GameRegion;
+  theatre: GameHalf;
+  hasCapital: boolean;
 }
 
 export class CountryIngame extends Country
@@ -93,6 +97,8 @@ export class Seafield extends Entity
 export type Neutrality = 'strict' | 'pro-axis' | 'pro-allies';
 export type Allegiance = Neutrality | Nation;
 export type Faction = 'Allies' | 'Axis';
+export type GameHalf = 'Europe' | 'Pacific';
+export type GameRegion = 'Europe' | 'North America' | 'South Africa' | 'North Africa' | 'South Africa' | 'West Russia' | 'East Russia / Mongolia' | 'China' | 'West Asia' | 'East Asia' | 'Oceania / Pacific';
 
 export class Building
 {

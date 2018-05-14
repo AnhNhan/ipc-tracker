@@ -9,7 +9,7 @@
     <div class="column" *ngFor="let column of columnValues">
       <h3>{{column.name}} - {{column.totalIPC}} <i class="fas fa-cogs"></i></h3>
       <div class="countries" dnd-droppable (onDropSuccess)="simpleDrop($event, column.name)">
-        <div class="country" *ngFor="let country of column.countries" dnd-draggable [dragEnabled]="true"[dragData]="country.id">
+        <div class="country" *ngFor="let country of column.countries" dnd-draggable [dragEnabled]="true" [dragData]="country.id">
           <h4>{{country.name}}</h4>
           <div class="countrycontents">
               <span *ngIf="country.ipc">{{country.ipc}}&nbsp;<i class="fas fa-cogs"></i>&nbsp;</span>
