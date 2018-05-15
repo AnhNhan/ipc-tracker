@@ -156,3 +156,12 @@ export class Building {
     this.current = _.max([ this.maxDamage, this.current - num ]);
   }
 }
+
+export class Unit extends Entity {
+  name: string;
+  attack: number;
+  defense: number;
+  movement: number;
+  cost: number;
+  category: 'Land' | 'Air' | 'Sea';
+}
