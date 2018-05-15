@@ -108,8 +108,8 @@ function groupByRegion(countries: Country[])
 export class Seafield extends Entity
 {
   number: number;
-  convoy: boolean = false;
-  kamikaze: boolean = false;
+  convoy = false;
+  kamikaze = false;
 }
 
 export type Neutrality = 'strict' | 'pro-axis' | 'pro-allies';
