@@ -1,13 +1,11 @@
 
 import * as _ from 'lodash';
 
-export class Entity
-{
+export class Entity {
   id: number;
 }
 
-export class Country extends Entity
-{
+export class Country extends Entity {
   name: string;
   ipc: number;
   /// Allegieance at the beginning of the game
@@ -23,8 +21,7 @@ export class Country extends Entity
   hasCapital: boolean;
 }
 
-export class CountryIngame extends Country
-{
+export class CountryIngame extends Country {
   allegianceCurrent?: Allegiance;
   currentGarrison?: number;
 
@@ -32,8 +29,7 @@ export class CountryIngame extends Country
   seaport: Building;
   industry: Building;
 
-  constructor(country: Country)
-  {
+  constructor(country: Country) {
     super();
 
     this.id = country.id;
@@ -54,22 +50,18 @@ export class CountryIngame extends Country
     this.allegianceCurrent = this.allegiance;
   }
 
-  removeGarrison()
-  {
+  removeGarrison() {
     this.currentGarrison = 0;
   }
 }
 
-export class Nation extends Entity
-{
+export class Nation extends Entity {
   name: string;
   faction: Faction;
 }
 
-export class NationIngame extends Nation
-{
-  constructor(nation: Nation)
-  {
+export class NationIngame extends Nation {
+  constructor(nation: Nation) {
     super();
     this.id = nation.id;
     this.name = nation.name;
@@ -77,22 +69,19 @@ export class NationIngame extends Nation
   }
 }
 
-export class Column
-{
+export class Column {
   constructor(
     public name: string,
     public nation: Nation|null,
     public countries: CountryIngame[],
   ) { }
 
-  get totalIPC()
-  {
+  get totalIPC() {
     return _.sum(_.map(this.countries, 'ipc'));
   }
 
-  get theatres()
-  {
-    let groups = _.groupBy(this.countries, 'theatre');
+  get theatres() {
+    const groups = _.groupBy(this.countries, 'theatre');
     return {
       groups,
       keys: Object.keys(groups),
@@ -100,13 +89,11 @@ export class Column
   }
 }
 
-function groupByRegion(countries: Country[])
-{
+function groupByRegion(countries: Country[]) {
   return _.groupBy(countries, 'gameRegion');
 }
 
-export class Seafield extends Entity
-{
+export class Seafield extends Entity {
   number: number;
   convoy = false;
   kamikaze = false;
@@ -116,10 +103,11 @@ export type Neutrality = 'strict' | 'pro-axis' | 'pro-allies';
 export type Allegiance = Neutrality | Nation;
 export type Faction = 'Allies' | 'Axis';
 export type GameHalf = 'Europe' | 'Pacific';
-export type GameRegion = 'Europe' | 'North America' | 'South America' | 'North Africa' | 'South Africa' | 'West Russia' | 'East Russia / Mongolia' | 'China' | 'West Asia' | 'East Asia' | 'Oceania / Pacific';
+export type GameRegion = 'Europe' | 'North America' | 'South America' | 'North Africa' | 'South Africa'
+                        | 'West Russia' | 'East Russia / Mongolia' | 'China'
+                        | 'West Asia' | 'East Asia' | 'Oceania / Pacific';
 
-export class Building
-{
+export class Building {
   public current: number;
 
   constructor(
@@ -130,10 +118,8 @@ export class Building
     this.current = max;
   }
 
-  upgrade(num: number)
-  {
-    if (this.current != this.max)
-    {
+  upgrade(num: number) {
+    if (this.current !== this.max) {
       console.log('Could not upgrade building');
       return;
     }
@@ -142,38 +128,31 @@ export class Building
     this.max = num;
   }
 
-  get maxDamage()
-  {
+  get maxDamage() {
     return this.max * -2;
   }
 
-  get canBuild()
-  {
+  get canBuild() {
     return this.current > 0;
   }
 
-  get isDamaged()
-  {
+  get isDamaged() {
     return this.current < this.max;
   }
 
-  get canBeDamaged()
-  {
+  get canBeDamaged() {
     return this.current > this.maxDamage;
   }
 
-  repair(num: number)
-  {
+  repair(num: number) {
     this.current = _.min([ this.max, this.current + num ]);
   }
 
-  repairFully()
-  {
+  repairFully() {
     this.current = this.max;
   }
 
-  damage(num: number)
-  {
+  damage(num: number) {
     this.current = _.max([ this.maxDamage, this.current - num ]);
   }
 }
