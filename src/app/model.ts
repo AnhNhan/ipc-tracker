@@ -58,6 +58,7 @@ export class CountryIngame extends Country {
 export class Nation extends Entity {
   name: string;
   faction: Faction;
+  supported_theatres: { [theatre in GameHalf]: boolean };
 }
 
 export class NationIngame extends Nation {
