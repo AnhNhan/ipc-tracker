@@ -175,6 +175,11 @@ export class Unit extends Entity {
   category: 'Land' | 'Air' | 'Sea';
 }
 
+export class BuildingUnit extends Entity {
+  name: string;
+  cost: number;
+}
+
 export class Bank {
   accounts: {
     [nation_id: number]: {
@@ -186,8 +191,7 @@ export class Bank {
     }
   } = {};
 
-  getAccount(nation: Nation)
-  {
+  getAccount(nation: Nation) {
     if (!this.accounts[nation.id]) {
       this.accounts[nation.id] = {
         balance: 0,
@@ -201,21 +205,21 @@ export class Bank {
   }
 
   grant(nation: Nation, amount: number) {
-    let account = this.getAccount(nation);
+    const account = this.getAccount(nation);
     account.balance += amount;
     // account.transactions.push(amount);
     account.lastGrant = amount;
   }
 
   deduct(nation: Nation, amount: number) {
-    let account = this.getAccount(nation);
+    const account = this.getAccount(nation);
     account.balance -= amount;
     // account.transactions.push(-amount);
     account.lastDeduction = amount;
   }
 
   remember(nation: Nation) {
-    let account = this.getAccount(nation);
+    const account = this.getAccount(nation);
     account.lastRemembered = account.balance;
   }
 }
