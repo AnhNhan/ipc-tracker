@@ -76,6 +76,7 @@ export class Column {
     public name: string,
     public nation: Nation|null,
     public countries: CountryIngame[],
+    private bank: Bank,
   ) { }
 
   get totalIPC() {
@@ -88,6 +89,10 @@ export class Column {
       groups,
       keys: Object.keys(groups),
     };
+  }
+
+  get account() {
+    return this.bank.getAccount(this.nation);
   }
 }
 
@@ -108,6 +113,8 @@ export type GameHalf = 'Europe' | 'Pacific';
 export type GameRegion = 'Europe' | 'North America' | 'South America' | 'North Africa' | 'South Africa'
                         | 'West Russia' | 'East Russia / Mongolia' | 'China'
                         | 'West Asia' | 'East Asia' | 'Oceania / Pacific';
+
+export type IncomePhasePosition = 'start' | 'end';
 
 export class Building {
   public current: number;
@@ -166,4 +173,49 @@ export class Unit extends Entity {
   movement: number;
   cost: number;
   category: 'Land' | 'Air' | 'Sea';
+}
+
+export class Bank {
+  accounts: {
+    [nation_id: number]: {
+      balance: number,
+      transactions: number[],
+      lastGrant: number,
+      lastDeduction: number,
+      lastRemembered: number,
+    }
+  } = {};
+
+  getAccount(nation: Nation)
+  {
+    if (!this.accounts[nation.id]) {
+      this.accounts[nation.id] = {
+        balance: 0,
+        transactions: [],
+        lastDeduction: 0,
+        lastGrant: 0,
+        lastRemembered: 0,
+      };
+    }
+    return this.accounts[nation.id];
+  }
+
+  grant(nation: Nation, amount: number) {
+    let account = this.getAccount(nation);
+    account.balance += amount;
+    // account.transactions.push(amount);
+    account.lastGrant = amount;
+  }
+
+  deduct(nation: Nation, amount: number) {
+    let account = this.getAccount(nation);
+    account.balance -= amount;
+    // account.transactions.push(-amount);
+    account.lastDeduction = amount;
+  }
+
+  remember(nation: Nation) {
+    let account = this.getAccount(nation);
+    account.lastRemembered = account.balance;
+  }
 }

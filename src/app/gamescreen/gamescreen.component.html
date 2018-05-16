@@ -7,6 +7,12 @@
   <dd>{{roundCounter}}</dd>
   <!-- <dt>Original nation count</dt>
   <dd>{{originalNationCount}}</dd> -->
+  <dt>Income phase location</dt>
+  <dd><select [(ngModel)]="selectedIncomePhaseLocation"><option value="start">Start</option><option value="end">End</option></select></dd>
+  <dt>Current turn's balance:</dt>
+  <dd>{{currentTurnColumn.account.balance}}</dd>
+  <dt>Spending to apply</dt>
+  <dd><input type="number" [(ngModel)]="expectedSpending"></dd>
 </dl>
 
 <button class="btn btn-primary" (click)="nextTurn()">Next turn</button>
@@ -19,6 +25,10 @@
   <div class="columns">
     <div class="column" *ngFor="let column of columnValues" dnd-droppable (onDropSuccess)="simpleDrop($event, column.name)" [class.current-turn]="column.nation && column.nation.id == nationTurnCounter">
       <h3>{{column.name}} - {{column.totalIPC}} <i class="fas fa-cogs"></i></h3>
+      <div class="bank-account" *ngIf="column.nation">
+        <h4>Bank account</h4>
+        <i class="fas money-check-alt"></i> <span class="text-info">{{column.account.balance}}</span>&nbsp;<span class="text-success"><i class="fas fa-long-arrow-alt-up"></i> {{column.account.lastGrant}}</span>&nbsp;<span class="text-danger"><i class="fas fa-long-arrow-alt-down"></i> {{column.account.lastDeduction}}</span>&nbsp;<span class="text-warning"><i class="fas fa-undo-alt"></i> {{column.account.lastRemembered}}</span>
+      </div>
       <div class="theatre" *ngFor="let theatre of [ 'Europe', 'Pacific' ]">
         <h4 *ngIf="column.theatres.groups[theatre] && column.theatres.groups[theatre].length">{{theatre}}</h4>
         <div class="countries">

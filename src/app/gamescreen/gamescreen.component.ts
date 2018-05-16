@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { CountryService } from '../country.service';
 import { NationService } from '../nation.service';
-import { Nation, CountryIngame, NationIngame, Country, Column, Neutrality, GameHalf } from '../model';
+import { Nation, CountryIngame, NationIngame, Country, Column, Neutrality, GameHalf, Bank, IncomePhasePosition } from '../model';
 import { AllegianceNamePipe } from '../allegiance-name.pipe';
 
 import * as _ from 'lodash';
@@ -33,6 +33,11 @@ export class GamescreenComponent implements OnInit {
     Europe: true,
     Pacific: true,
   };
+
+  bank = new Bank();
+  selectedIncomePhaseLocation: IncomePhasePosition = 'end';
+
+  expectedSpending = 0;
 
   constructor(
     private route: ActivatedRoute,
@@ -66,12 +71,12 @@ export class GamescreenComponent implements OnInit {
       let _nations = nations.filter(nation => this.selectedTheatre == 'Global' || nation.supported_theatres[this.selectedTheatre]).map(nation => new NationIngame(nation));
       _nations.forEach(nation => {
         this.nations[nation.id] = nation;
-        this.columns[nation.name] = new Column(nation.name, nation, []);
+        this.columns[nation.name] = new Column(nation.name, nation, [], this.bank);
       });
       this.columns = _.extend(this.columns, {
-        'pro-axis': new Column('pro-axis', null, []),
-        'pro-allies': new Column('pro-allies', null, []),
-        'strict': new Column('strict', null, []),
+        'pro-axis': new Column('pro-axis', null, [], this.bank),
+        'pro-allies': new Column('pro-allies', null, [], this.bank),
+        'strict': new Column('strict', null, [], this.bank),
       });
       this.nationTurnCounter = this.firstNationId = _.first(_nations).id;
       this.loadCounter--;
@@ -87,6 +92,8 @@ export class GamescreenComponent implements OnInit {
       });
       this.loadCounter--;
     });
+
+    Object.values(this.columns).filter(column => column.nation).forEach(column => this.bank.grant(column.nation, column.totalIPC));
   }
 
   get columnValues()
@@ -94,15 +101,38 @@ export class GamescreenComponent implements OnInit {
     return _.values(this.columns);
   }
 
+  get currentTurnColumn()
+  {
+    return this.columns[this.nations[this.nationTurnCounter].name];
+  }
+
   nextTurn()
   {
+    if (this.selectedIncomePhaseLocation == 'end') {
+      let nation = this.nations[this.nationTurnCounter];
+      this.bank.remember(nation);
+      this.bank.deduct(nation, this.expectedSpending);
+      this.bank.grant(nation, this.columns[nation.name].totalIPC);
+    }
+    this.nextTurnCounter();
+    if (this.selectedIncomePhaseLocation == 'start') {
+      let nation = this.nations[this.nationTurnCounter];
+      this.bank.remember(nation);
+      this.bank.deduct(nation, this.expectedSpending);
+      this.bank.grant(nation, this.columns[nation.name].totalIPC);
+    }
+
+    this.expectedSpending = 0;
+  }
+
+  nextTurnCounter()
+  {
     this.nationTurnCounter++;
-    console.log(this.nationTurnCounter);
     if (this.nationTurnCounter > this.originalNationCount) {
       this.nationTurnCounter = this.firstNationId;
       this.roundCounter++;
     } else if (!this.nations[this.nationTurnCounter]) {
-      this.nextTurn();
+      this.nextTurnCounter();
     }
   }
 
