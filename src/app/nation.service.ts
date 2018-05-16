@@ -9,8 +9,7 @@ export class NationService {
 
   constructor() { }
 
-  getNations()
-  {
+  getNations() {
     return of(nations);
   }
 }

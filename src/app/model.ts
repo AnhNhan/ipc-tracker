@@ -230,16 +230,17 @@ export class ShoppingList {
   number_buildings: { [id: number]: number } = {};
 
   constructor(
-    private units: Unit[],
-    private buildings: BuildingUnit[],
+    public readonly units: Unit[],
+    public readonly buildings: BuildingUnit[],
   ) {
     this.resetShoppingList();
   }
 
-  totalIPCs() {
+  get totalIPCs() {
     let total = 0;
     this.units.forEach(unit => total += this.number_units[unit.id] * unit.cost);
     this.buildings.forEach(building => total += this.number_buildings[building.id] * building.cost);
+    return total;
   }
 
   resetShoppingList() {

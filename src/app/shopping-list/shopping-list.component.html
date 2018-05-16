@@ -1,3 +1,16 @@
-<p>
-  shopping-list works!
-</p>
+<div class="container">
+  <div *ngFor="let unit in shoppingList.units">
+    <div class="line-name">{{unit.name}}</div>
+    <div class="line-cost">{{unit.cost}}</div>
+    <div class="line-input"><input type="number" [(ngModel)]="shoppingList.number_units[unit.id]"></div>
+  </div>
+  <div *ngFor="let unit in shoppingList.units">
+    <div class="line-name">{{unit.name}}</div>
+    <div class="line-cost">{{unit.cost}}</div>
+    <div class="line-input"><input type="number" [(ngModel)]="shoppingList.number_units[unit.id]"></div>
+  </div>
+</div>
+<div class="end">
+  <div class="result">{{shoppingList.totalIPCs}}</div>
+  <div class="reset"><button class="btn btn-block btn-primary" (click)="shoppingList.resetShoppingList()">Reset</button></div>
+</div>
