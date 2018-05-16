@@ -93,7 +93,8 @@ export class GamescreenComponent implements OnInit {
       this.loadCounter--;
     });
 
-    Object.values(this.columns).filter(column => column.nation).forEach(column => this.bank.grant(column.nation, column.totalIPC));
+    // if income phase at the end, alreaday "play" a round so we have balance to spend
+    this.selectedIncomePhaseLocation == 'end' && Object.values(this.columns).filter(column => column.nation).forEach(column => this.bank.grant(column.nation, column.totalIPC));
   }
 
   get columnValues()
