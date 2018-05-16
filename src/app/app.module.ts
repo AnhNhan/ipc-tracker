@@ -15,6 +15,7 @@ import { AppRoutingModule } from './/app-routing.module';
 import { EditorComponent } from './editor/editor.component';
 import { BuildingComponent } from './building/building.component';
 import { OrderCountriesPipe } from './order-countries.pipe';
+import { ShoppingListComponent } from './shopping-list/shopping-list.component';
 
 @NgModule({
   declarations: [
@@ -27,7 +28,8 @@ import { OrderCountriesPipe } from './order-countries.pipe';
     GamescreenComponent,
     EditorComponent,
     BuildingComponent,
-    OrderCountriesPipe
+    OrderCountriesPipe,
+    ShoppingListComponent
   ],
   imports: [
     BrowserModule,

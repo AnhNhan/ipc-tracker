@@ -1,6 +1,6 @@
 import { Pipe, PipeTransform } from '@angular/core';
 import { Country } from './model';
-import _ = require('lodash');
+import * as _ from 'lodash';
 
 @Pipe({
   name: 'orderCountries'

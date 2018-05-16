@@ -1,12 +1,15 @@
 import { Component, OnInit } from '@angular/core';
 import { CountryService } from '../country.service';
 import { NationService } from '../nation.service';
-import { Nation, CountryIngame, NationIngame, Country, Column, Neutrality, GameHalf, Bank, IncomePhasePosition } from '../model';
+import { Nation, CountryIngame, NationIngame, Country,
+  Column, Neutrality, GameHalf, Bank, IncomePhasePosition, ShoppingList, BuildingUnit, Unit } from '../model';
 import { AllegianceNamePipe } from '../allegiance-name.pipe';
 
 import * as _ from 'lodash';
 import { ActivatedRoute } from '@angular/router';
 import { Location } from '@angular/common';
+import { UnitsService } from '../units.service';
+import { BuildingsService } from '../buildings.service';
 
 @Component({
   selector: 'app-gamescreen',
@@ -18,10 +21,12 @@ export class GamescreenComponent implements OnInit {
   nations: { [id: number]: NationIngame } = {};
   columns: { [name: string]: Column } = {};
   countries: CountryIngame[] = [];
+  buildings: BuildingUnit[];
+  units: Unit[];
 
   global_neutrality: Neutrality = 'strict';
 
-  loadCounter = 2;
+  loadCounter = 4;
 
   originalNationCount: number;
   firstNationId: number;
@@ -38,37 +43,43 @@ export class GamescreenComponent implements OnInit {
   selectedIncomePhaseLocation: IncomePhasePosition = 'end';
 
   expectedSpending = 0;
+  shoppingList: ShoppingList;
 
   constructor(
     private route: ActivatedRoute,
     private countryService: CountryService,
     private nationService: NationService,
+    private unitsService: UnitsService,
+    private buildingsService: BuildingsService,
     private location: Location,
   ) {
   }
 
   ngOnInit() {
-    let _theatreParam = this.route.snapshot.paramMap.get('theatre');
+    const _theatreParam = this.route.snapshot.paramMap.get('theatre');
     let theatreParam: GameHalf | 'Global';
     if (_theatreParam && !(
-      _theatreParam != 'Europe'
-      && _theatreParam != 'Pacific'
-      && _theatreParam != 'Global'
+      _theatreParam !== 'Europe'
+      && _theatreParam !== 'Pacific'
+      && _theatreParam !== 'Global'
     )) {
       theatreParam = _theatreParam;
     } else if (_theatreParam) {
-      throw 'invalid theatre';
+      throw new Error('invalid theatre');
     }
     this.selectedTheatre = theatreParam || 'Global';
-    if (this.selectedTheatre == 'Europe') {
+    if (this.selectedTheatre === 'Europe') {
       this.enabledTheatres.Pacific = false;
-    } else if (this.selectedTheatre == 'Pacific') {
+    } else if (this.selectedTheatre === 'Pacific') {
       this.enabledTheatres.Europe = false;
     }
 
     this.nationService.getNations().subscribe(nations => {
       this.originalNationCount = nations.length;
-      let _nations = nations.filter(nation => this.selectedTheatre == 'Global' || nation.supported_theatres[this.selectedTheatre]).map(nation => new NationIngame(nation));
+      const _nations = nations.filter(nation =>
+        this.selectedTheatre === 'Global' ||
+        nation.supported_theatres[this.selectedTheatre]
+      ).map(nation => new NationIngame(nation));
       _nations.forEach(nation => {
         this.nations[nation.id] = nation;
         this.columns[nation.name] = new Column(nation.name, nation, [], this.bank);
@@ -79,47 +90,68 @@ export class GamescreenComponent implements OnInit {
         'strict': new Column('strict', null, [], this.bank),
       });
       this.nationTurnCounter = this.firstNationId = _.first(_nations).id;
-      this.loadCounter--;
+      this.decreaseLoadCounter();
     });
     this.countryService.getCountries().subscribe(countries => {
       this.countries = countries.filter(country => this.enabledTheatres[country.theatre]).map(country => new CountryIngame(country));
-      this.countries.forEach(country => {
-        let column = this.columns[AllegianceNamePipe.prototype.transform(country.allegiance)];
-        if (!column) {
-          return;
-        }
-        column.countries.push(country);
-      });
-      this.loadCounter--;
+      this.decreaseLoadCounter();
     });
-
-    // if income phase at the end, alreaday "play" a round so we have balance to spend
-    this.selectedIncomePhaseLocation == 'end' && Object.values(this.columns).filter(column => column.nation).forEach(column => this.bank.grant(column.nation, column.totalIPC));
+    this.buildingsService.getBuildings().subscribe(buildings => {
+      this.buildings = buildings;
+      this.decreaseLoadCounter();
+    });
+    this.unitsService.getUnits().subscribe(units => {
+      this.units = units;
+      this.decreaseLoadCounter();
+    });
   }
 
-  get columnValues()
-  {
+  finishedLoading() {
+    this.countries.forEach(country => {
+      const column = this.columns[AllegianceNamePipe.prototype.transform(country.allegiance)];
+      if (!column) {
+        return;
+      }
+      column.countries.push(country);
+    });
+
+    this.shoppingList = new ShoppingList(this.units, this.buildings);
+
+    // if income phase at the end, alreaday "play" a round so we have balance to spend
+    // tslint:disable-next-line:no-unused-expression
+    this.selectedIncomePhaseLocation === 'end' &&
+    Object.values(this.columns).filter(column => column.nation)
+    .forEach(column => this.bank.grant(column.nation, column.totalIPC));
+  }
+
+  decreaseLoadCounter() {
+    this.loadCounter--;
+
+    if (this.loadCounter === 0) {
+      this.finishedLoading();
+    }
+  }
+
+  get columnValues() {
     return _.values(this.columns);
   }
 
-  get currentTurnColumn()
-  {
+  get currentTurnColumn() {
     return this.columns[this.nations[this.nationTurnCounter].name];
   }
 
-  nextTurn()
-  {
-    let nationBefore = this.nations[this.nationTurnCounter];
+  nextTurn() {
+    const nationBefore = this.nations[this.nationTurnCounter];
 
     this.nextTurnCounter();
 
-    let nationAfter = this.nations[this.nationTurnCounter];
+    const nationAfter = this.nations[this.nationTurnCounter];
 
-    if (this.selectedIncomePhaseLocation == 'end') {
+    if (this.selectedIncomePhaseLocation === 'end') {
       this.bank.remember(nationBefore);
       this.bank.grant(nationBefore, this.columns[nationBefore.name].totalIPC);
     }
-    if (this.selectedIncomePhaseLocation == 'start') {
+    if (this.selectedIncomePhaseLocation === 'start') {
       this.bank.remember(nationAfter);
       this.bank.grant(nationAfter, this.columns[nationAfter.name].totalIPC);
     }
@@ -129,8 +161,7 @@ export class GamescreenComponent implements OnInit {
     this.expectedSpending = 0;
   }
 
-  nextTurnCounter()
-  {
+  nextTurnCounter() {
     this.nationTurnCounter++;
     if (this.nationTurnCounter > this.originalNationCount) {
       this.nationTurnCounter = this.firstNationId;
@@ -140,15 +171,14 @@ export class GamescreenComponent implements OnInit {
     }
   }
 
-  simpleDrop($event, to_column_name)
-  {
-    let country_id = $event.dragData;
-    let country = this.countries.find(country => country.id == country_id);
-    let old_column = this.columns[AllegianceNamePipe.prototype.transform(country.allegiance)];
-    let new_column = this.columns[to_column_name];
+  simpleDrop($event, to_column_name) {
+    const country_id = $event.dragData;
+    const country = this.countries.find(_country => _country.id === country_id);
+    const old_column = this.columns[AllegianceNamePipe.prototype.transform(country.allegiance)];
+    const new_column = this.columns[to_column_name];
 
     new_column.countries = _.concat(new_column.countries, country);
-    old_column.countries = old_column.countries.filter(country => country.id != country_id);
+    old_column.countries = old_column.countries.filter(_country => _country.id !== country_id);
   }
 
 }

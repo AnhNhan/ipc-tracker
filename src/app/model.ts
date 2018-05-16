@@ -223,3 +223,20 @@ export class Bank {
     account.lastRemembered = account.balance;
   }
 }
+
+type UnitIds = 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9 | 10 | 11 | 12 | 13 | 14;
+type UnitBuildingIds = 1 | 2 | 3 | 4 | 5;
+
+export class ShoppingList {
+  number_units: { [id: number]: number };
+
+  number_buildings: { [id: number]: number };
+
+  constructor(
+    private units: Unit[],
+    private buildings: BuildingUnit[],
+  ) {
+    units.forEach(unit => this.number_units[unit.id] = 0);
+    buildings.forEach(building => this.number_buildings[building.id] = 0);
+  }
+}

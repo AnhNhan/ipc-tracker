@@ -17,14 +17,16 @@ export class CountryService {
     this.countries = persistence.get('countries', StorageType.LOCAL) || [];
   }
 
-  saveCountries()
-  {
+  saveCountries() {
     let result = this.persistence.set('countries', this.countries, { type: StorageType.LOCAL });
     console.log('Saved countries: ' + result);
   }
 
-  getCountries()
-  {
+  setCountries(countries: Country[]) {
+    this.countries = countries;
+  }
+
+  getCountries() {
     return of(this.countries);
   }
 }
