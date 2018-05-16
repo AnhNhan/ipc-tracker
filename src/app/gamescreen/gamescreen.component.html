@@ -1,4 +1,15 @@
-<h2>Active game</h2>
+<dl>
+  <dt>Theatre:</dt>
+  <dd>{{selectedTheatre}}</dd>
+  <!-- <dt>Nation turn counter:</dt>
+  <dd>{{nationTurnCounter}}</dd> -->
+  <dt>Round no.</dt>
+  <dd>{{roundCounter}}</dd>
+  <!-- <dt>Original nation count</dt>
+  <dd>{{originalNationCount}}</dd> -->
+</dl>
+
+<button class="btn btn-primary" (click)="nextTurn()">Next turn</button>
 
 <div class="spinner" *ngIf="loadCounter">
     <i class="fas fa-spinner fa-spin"></i>
@@ -6,10 +17,10 @@
 
 <div class="gamecontents" *ngIf="!loadCounter">
   <div class="columns">
-    <div class="column" *ngFor="let column of columnValues" dnd-droppable (onDropSuccess)="simpleDrop($event, column.name)">
+    <div class="column" *ngFor="let column of columnValues" dnd-droppable (onDropSuccess)="simpleDrop($event, column.name)" [class.current-turn]="column.nation && column.nation.id == nationTurnCounter">
       <h3>{{column.name}} - {{column.totalIPC}} <i class="fas fa-cogs"></i></h3>
       <div class="theatre" *ngFor="let theatre of [ 'Europe', 'Pacific' ]">
-        <h4>{{theatre}}</h4>
+        <h4 *ngIf="column.theatres.groups[theatre] && column.theatres.groups[theatre].length">{{theatre}}</h4>
         <div class="countries">
           <div class="country" *ngFor="let country of (column.theatres.groups[theatre] | orderCountries)" dnd-draggable [dragEnabled]="true" [dragData]="country.id">
             <h5>{{country.name}} <span *ngIf="country.hasCapital"><i class="fas fa-star"></i>&nbsp;</span> <span class="small">{{country.gameRegion}}</span></h5>

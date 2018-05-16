@@ -8,6 +8,7 @@
   flex-basis: 200px;
   display: flex;
   flex-direction: column;
+  padding: 5px;
 }
 
 .column + .column
@@ -19,6 +20,11 @@
 {
   white-space: nowrap;
   min-width: 240px;
+}
+
+.current-turn
+{
+  background-color: aquamarine;
 }
 
 .countries

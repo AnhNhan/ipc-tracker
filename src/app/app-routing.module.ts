@@ -6,6 +6,7 @@ import { EditorComponent } from './editor/editor.component';
 
 const routes: Routes = [
   { path: 'game', component: GamescreenComponent },
+  { path: 'game/:theatre', component: GamescreenComponent },
   { path: 'editor', component: EditorComponent },
   { path: '', redirectTo: '/editor', pathMatch: 'full' },
 ];

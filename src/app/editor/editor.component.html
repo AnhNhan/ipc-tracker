@@ -1,5 +1,10 @@
 <span class="save-button btn btn-primary" (click)="saveAll()">save all</span>
 <span class="save-button btn btn-primary" (click)="exportAll()">export all</span>
 <app-nations></app-nations>
-<a class="btn btn-primary btn-block" routerLink="/game">Enter Game</a>
+<div class="btn btn-group" role="group" aria-label="Basic example">
+  <span class="btn btn-primary">Enter Game</span>
+  <a class="btn btn-danger" routerLink="/game">Global</a>
+  <a class="btn btn-warning" routerLink="/game/Europe">Europe</a>
+  <a class="btn btn-success" routerLink="/game/Pacific">Pacific</a>
+</div>
 <app-countries></app-countries>

@@ -67,6 +67,7 @@ export class NationIngame extends Nation {
     this.id = nation.id;
     this.name = nation.name;
     this.faction = nation.faction;
+    this.supported_theatres = nation.supported_theatres;
   }
 }
 
