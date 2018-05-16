@@ -108,19 +108,22 @@ export class GamescreenComponent implements OnInit {
 
   nextTurn()
   {
-    if (this.selectedIncomePhaseLocation == 'end') {
-      let nation = this.nations[this.nationTurnCounter];
-      this.bank.remember(nation);
-      this.bank.deduct(nation, this.expectedSpending);
-      this.bank.grant(nation, this.columns[nation.name].totalIPC);
-    }
+    let nationBefore = this.nations[this.nationTurnCounter];
+
     this.nextTurnCounter();
-    if (this.selectedIncomePhaseLocation == 'start') {
-      let nation = this.nations[this.nationTurnCounter];
-      this.bank.remember(nation);
-      this.bank.deduct(nation, this.expectedSpending);
-      this.bank.grant(nation, this.columns[nation.name].totalIPC);
+
+    let nationAfter = this.nations[this.nationTurnCounter];
+
+    if (this.selectedIncomePhaseLocation == 'end') {
+      this.bank.remember(nationBefore);
+      this.bank.grant(nationBefore, this.columns[nationBefore.name].totalIPC);
     }
+    if (this.selectedIncomePhaseLocation == 'start') {
+      this.bank.remember(nationAfter);
+      this.bank.grant(nationAfter, this.columns[nationAfter.name].totalIPC);
+    }
+
+    this.bank.deduct(nationBefore, this.expectedSpending);
 
     this.expectedSpending = 0;
   }

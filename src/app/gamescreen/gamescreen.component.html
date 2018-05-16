@@ -11,8 +11,8 @@
   <dd><select [(ngModel)]="selectedIncomePhaseLocation"><option value="start">Start</option><option value="end">End</option></select></dd>
   <dt>Current turn's balance:</dt>
   <dd>{{currentTurnColumn.account.balance}}</dd>
-  <dt>Spending to apply</dt>
-  <dd><input type="number" [(ngModel)]="expectedSpending"></dd>
+  <dt>Spending to apply (max balance)</dt>
+  <dd><input type="number" [(ngModel)]="expectedSpending" [max]="currentTurnColumn.account.balance" min="0"></dd>
 </dl>
 
 <button class="btn btn-primary" (click)="nextTurn()">Next turn</button>
