@@ -1,19 +1,29 @@
-<dl>
-  <dt>Theatre:</dt>
-  <dd>{{selectedTheatre}}</dd>
-  <!-- <dt>Nation turn counter:</dt>
-  <dd>{{nationTurnCounter}}</dd> -->
-  <dt>Round no.</dt>
-  <dd>{{roundCounter}}</dd>
-  <!-- <dt>Original nation count</dt>
-  <dd>{{originalNationCount}}</dd> -->
-  <dt>Income phase location</dt>
-  <dd><select [(ngModel)]="selectedIncomePhaseLocation"><option value="start">Start</option><option value="end">End</option></select></dd>
-  <dt>Current turn's balance:</dt>
-  <dd>{{currentTurnColumn.account.balance}}</dd>
-  <dt>Spending to apply (max balance)</dt>
-  <dd><input type="number" [(ngModel)]="expectedSpending" [max]="currentTurnColumn.account.balance" min="0"></dd>
-</dl>
+<div class="container">
+  <div class="row">
+    <div class="col">
+      <dl>
+        <dt>Theatre:</dt>
+        <dd>{{selectedTheatre}}</dd>
+        <!-- <dt>Nation turn counter:</dt>
+        <dd>{{nationTurnCounter}}</dd> -->
+        <dt>Round no.</dt>
+        <dd>{{roundCounter}}</dd>
+        <!-- <dt>Original nation count</dt>
+        <dd>{{originalNationCount}}</dd> -->
+        <dt>Income phase location</dt>
+        <dd><select [(ngModel)]="selectedIncomePhaseLocation"><option value="start">Start</option><option value="end">End</option></select></dd>
+        <dt>Current turn's balance:</dt>
+        <dd>{{currentTurnColumn.account.balance}}</dd>
+        <dt>Spending to apply (max balance)</dt>
+        <dd><input type="number" [(ngModel)]="expectedSpending" [max]="currentTurnColumn.account.balance" min="0"></dd>
+      </dl>
+    </div>
+
+    <div class="col">
+      <app-shopping-list [(shoppingList)]="shoppingList"></app-shopping-list>
+    </div>
+  </div>
+</div>
 
 <button class="btn btn-primary" (click)="nextTurn()">Next turn</button>
 

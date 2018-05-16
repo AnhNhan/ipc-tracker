@@ -18,7 +18,7 @@ export class CountryService {
   }
 
   saveCountries() {
-    let result = this.persistence.set('countries', this.countries, { type: StorageType.LOCAL });
+    const result = this.persistence.set('countries', this.countries, { type: StorageType.LOCAL });
     console.log('Saved countries: ' + result);
   }
 
