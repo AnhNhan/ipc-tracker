@@ -7,6 +7,9 @@ import { CountryService } from '../country.service';
   styleUrls: ['./editor.component.css']
 })
 export class EditorComponent implements OnInit {
+
+  file: any;
+
   constructor(
     private countries: CountryService
   ) {
@@ -15,23 +18,31 @@ export class EditorComponent implements OnInit {
   ngOnInit() {
   }
 
-  saveAll()
-  {
+  saveAll() {
     this.countries.saveCountries();
   }
 
-  async exportAll()
-  {
+  async exportAll() {
     this.saveAll();
-    let obj = {};
+    const obj = {};
     await this.countries.getCountries().subscribe(countries => obj['countries'] = countries);
 
-    let blob = new Blob([JSON.stringify(obj)], { type: 'application/json' });
-    let link = document.createElement('a');
+    const blob = new Blob([JSON.stringify(obj)], { type: 'application/json' });
+    const link = document.createElement('a');
     link.href = window.URL.createObjectURL(blob);
     link.target = '_self';
     link.download = 'ipc-tracker-export.json';
     link.click();
   }
 
+  import() {
+    const fileReader = new FileReader();
+    fileReader.onload = (e) => {
+      const contents = JSON.parse(fileReader.result);
+      console.log(contents);
+      this.countries.setCountries(contents.countries);
+      this.countries.saveCountries();
+    };
+    fileReader.readAsText(this.file);
+  }
 }
