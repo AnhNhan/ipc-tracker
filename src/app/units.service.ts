@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { Unit } from './model';
 import { of } from 'rxjs';
+import { DomSanitizer } from '@angular/platform-browser';
 
 @Injectable({
   providedIn: 'root'
@@ -16,6 +17,7 @@ export class UnitsService {
       movement: 1,
       cost: 3,
       category: 'Land',
+      icons: '<i class="fas fa-male"></i>',
     },
     {
       id: 2,
@@ -25,6 +27,7 @@ export class UnitsService {
       movement: 1,
       cost: 4,
       category: 'Land',
+      icons: '<i class="fas fa-mars-stroke"></i>',
     },
     {
       id: 3,
@@ -34,6 +37,7 @@ export class UnitsService {
       movement: 2,
       cost: 4,
       category: 'Land',
+      icons: '<i class="fas fa-male"></i> <i class="fas fa-taxi"></i>',
     },
     {
       id: 4,
@@ -43,15 +47,17 @@ export class UnitsService {
       movement: 2,
       cost: 6,
       category: 'Land',
+      icons: '<i class="fas fa-car"></i>',
     },
     {
       id: 5,
-      name: 'AA',
+      name: 'AA gun',
       attack: 0,
       defense: 1,
       movement: 1,
       cost: 6,
       category: 'Land',
+      icons: '<i class="fas fa-plane"></i> <i class="fas fa-crosshairs"></i>',
     },
     {
       id: 6,
@@ -61,6 +67,7 @@ export class UnitsService {
       movement: 4,
       cost: 10,
       category: 'Air',
+      icons: '<i class="fas fa-fighter-jet"></i>',
     },
     {
       id: 7,
@@ -70,6 +77,7 @@ export class UnitsService {
       movement: 4,
       cost: 11,
       category: 'Air',
+      icons: '<i class="fas fa-plane"></i>',
     },
     {
       id: 8,
@@ -79,6 +87,7 @@ export class UnitsService {
       movement: 6,
       cost: 12,
       category: 'Air',
+      icons: '<i class="fas fa-plane"></i> <i class="fas fa-expand"></i>',
     },
     {
       id: 9,
@@ -88,6 +97,7 @@ export class UnitsService {
       movement: 2,
       cost: 6,
       category: 'Sea',
+      icons: '<i class="fas fa-ship"></i> <i class="fas fa-subway"></i>',
     },
     {
       id: 10,
@@ -97,6 +107,7 @@ export class UnitsService {
       movement: 2,
       cost: 7,
       category: 'Sea',
+      icons: '<i class="fas fa-ship"></i> <i class="fas fa-bus"></i>',
     },
     {
       id: 11,
@@ -106,6 +117,7 @@ export class UnitsService {
       movement: 2,
       cost: 8,
       category: 'Sea',
+      icons: '<i class="fas fa-ship"></i> <i class="fas fa-broadcast-tower"></i>',
     },
     {
       id: 12,
@@ -115,6 +127,7 @@ export class UnitsService {
       movement: 2,
       cost: 12,
       category: 'Sea',
+      icons: '<i class="fas fa-ship"></i> <i class="fas fa-chess-knight"></i>',
     },
     {
       id: 13,
@@ -124,6 +137,7 @@ export class UnitsService {
       movement: 2,
       cost: 16,
       category: 'Sea',
+      icons: '<i class="fas fa-ship"></i> <i class="fas fa-people-carry"></i>',
     },
     {
       id: 14,
@@ -133,10 +147,19 @@ export class UnitsService {
       movement: 2,
       cost: 20,
       category: 'Sea',
+      icons: '<i class="fas fa-ship"></i> <i class="fas fa-chess-rook"></i>',
     },
   ];
 
-  constructor() { }
+  constructor(
+    sanitizer: DomSanitizer,
+  ) {
+    this.units.forEach(unit => {
+      const icons = unit.icons;
+      if (typeof icons !== 'string') { return; }
+      unit.icons = sanitizer.bypassSecurityTrustHtml(icons);
+    });
+  }
 
   getUnits() {
     return of(this.units);

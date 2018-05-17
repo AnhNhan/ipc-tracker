@@ -1,16 +1,20 @@
-<div class="container">
-  <div *ngFor="let unit in shoppingList.units">
-    <div class="line-name">{{unit.name}}</div>
-    <div class="line-cost">{{unit.cost}}</div>
-    <div class="line-input"><input type="number" [(ngModel)]="shoppingList.number_units[unit.id]"></div>
+<div class="shopping-list-container">
+  <div title="Repairs">
+    <div class="line-name"><i class="fas fa-wrench"></i></div>
+    <div class="line-cost">1 <i class="fas fa-cogs"></i></div>
+    <div class="line-input"><input type="number" [(ngModel)]="shoppingList.number_repairs"></div>
   </div>
-  <div *ngFor="let unit in shoppingList.units">
-    <div class="line-name">{{unit.name}}</div>
-    <div class="line-cost">{{unit.cost}}</div>
-    <div class="line-input"><input type="number" [(ngModel)]="shoppingList.number_units[unit.id]"></div>
+  <div *ngFor="let unit of shoppingList.units" [title]="unit.name">
+    <div class="line-name" [innerHTML]="unit.icons"></div>
+    <div class="line-cost">{{unit.cost}} <i class="fas fa-cogs"></i></div>
+    <div class="line-input"><input type="number" min="0" [(ngModel)]="shoppingList.number_units[unit.id]"></div>
+  </div>
+  <div *ngFor="let building of shoppingList.buildings" [title]="building.name">
+    <div class="line-name" [innerHTML]="building.icons"></div>
+    <div class="line-cost">{{building.cost}} <i class="fas fa-cogs"></i></div>
+    <div class="line-input"><input type="number" min="0" [(ngModel)]="shoppingList.number_buildings[building.id]"></div>
   </div>
 </div>
 <div class="end">
-  <div class="result">{{shoppingList.totalIPCs}}</div>
-  <div class="reset"><button class="btn btn-block btn-primary" (click)="shoppingList.resetShoppingList()">Reset</button></div>
+  <div class="result">Total: {{shoppingList.totalIPCs}} <i class="fas fa-cogs"></i>&nbsp;&nbsp;&nbsp;&nbsp;<button class="btn btn-secondary btn-sm" (click)="shoppingList.resetShoppingList()">Reset</button></div>
 </div>

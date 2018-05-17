@@ -1,0 +1,43 @@
+.shopping-list-container
+{
+  display: flex;
+  white-space: nowrap;
+}
+
+.shopping-list-container > div
+{
+  display: flex;
+  flex-direction: column;
+}
+
+.shopping-list-container > div div
+{
+  padding: 5px;
+  padding-top: 0;
+}
+
+.shopping-list-container > div:first-child div
+{
+  padding-left: 0;
+}
+
+.shopping-list-container .line-input
+{
+  font-size: .7em;
+}
+
+.shopping-list-container .line-input > input
+{
+  max-width: 4em;
+}
+
+.shopping-list-container > div .line-cost
+{
+  font-size: .7em;
+}
+
+.end
+{
+  padding: 5px;
+  padding-left: 0;
+}

@@ -1,5 +1,6 @@
 
 import * as _ from 'lodash';
+import { SafeHtml } from '@angular/platform-browser';
 
 export class Entity {
   id: number;
@@ -173,11 +174,15 @@ export class Unit extends Entity {
   movement: number;
   cost: number;
   category: 'Land' | 'Air' | 'Sea';
+
+  icons: string|SafeHtml;
 }
 
 export class BuildingUnit extends Entity {
   name: string;
   cost: number;
+
+  icons: string|SafeHtml;
 }
 
 export class Bank {
@@ -229,6 +234,8 @@ export class ShoppingList {
 
   number_buildings: { [id: number]: number } = {};
 
+  number_repairs: number;
+
   constructor(
     public readonly units: Unit[],
     public readonly buildings: BuildingUnit[],
@@ -237,7 +244,7 @@ export class ShoppingList {
   }
 
   get totalIPCs() {
-    let total = 0;
+    let total = this.number_repairs;
     this.units.forEach(unit => total += this.number_units[unit.id] * unit.cost);
     this.buildings.forEach(building => total += this.number_buildings[building.id] * building.cost);
     return total;
@@ -246,5 +253,6 @@ export class ShoppingList {
   resetShoppingList() {
     this.units.forEach(unit => this.number_units[unit.id] = 0);
     this.buildings.forEach(building => this.number_buildings[building.id] = 0);
+    this.number_repairs = 0;
   }
 }

@@ -14,7 +14,6 @@ export class ShoppingListComponent implements OnInit {
   constructor() { }
 
   ngOnInit() {
-    console.log(this.shoppingList);
   }
 
 }

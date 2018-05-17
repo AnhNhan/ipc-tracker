@@ -42,7 +42,6 @@ export class GamescreenComponent implements OnInit {
   bank = new Bank();
   selectedIncomePhaseLocation: IncomePhasePosition = 'end';
 
-  expectedSpending = 0;
   shoppingList: ShoppingList;
 
   constructor(
@@ -156,9 +155,9 @@ export class GamescreenComponent implements OnInit {
       this.bank.grant(nationAfter, this.columns[nationAfter.name].totalIPC);
     }
 
-    this.bank.deduct(nationBefore, this.expectedSpending);
+    this.bank.deduct(nationBefore, this.shoppingList.totalIPCs);
 
-    this.expectedSpending = 0;
+    this.shoppingList.resetShoppingList();
   }
 
   nextTurnCounter() {

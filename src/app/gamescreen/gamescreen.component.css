@@ -1,3 +1,13 @@
+.top-container
+{
+  margin-bottom: 10px;
+}
+
+.game-info
+{
+  width: 600px;
+}
+
 .columns
 {
   display: flex;
@@ -16,15 +26,20 @@
   margin-left: 5px;
 }
 
+.column:nth-child(2n)
+{
+  background-color: #f6f6f6;
+}
+
 .column > h3
 {
   white-space: nowrap;
   min-width: 240px;
 }
 
-.current-turn
+.column.current-turn
 {
-  background-color: aquamarine;
+  background-color: #a9c1c4;
 }
 
 .countries
@@ -62,8 +77,20 @@
   align-items: flex-start;
 }
 
+.countrycontents > :not(.buildings)
+{
+  line-height: 30px;
+}
+
 .buildings
 {
   align-self: flex-end;
   display: flex;
+}
+
+.column-balance .small
+{
+  display: inline-block;
+  margin-left: 5px;
+  font-size: .6em;
 }
