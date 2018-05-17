@@ -6,6 +6,8 @@
         <dd class="col-6">{{selectedTheatre}}</dd>
         <dt class="col-6">Round no.</dt>
         <dd class="col-6">{{roundCounter}}</dd>
+        <dt class="col-6">Global neutrality:</dt>
+        <dd class="col-6"><select [(ngModel)]="global_neutrality" [disabled]="global_neutrality != 'strict'"><option value="strict">strict</option><option value="pro-axis">pro-axis</option><option value="pro-allies">pro-allies</option></select></dd>
         <dt class="col-6">Income phase location</dt>
         <dd class="col-6"><select [(ngModel)]="selectedIncomePhaseLocation"><option value="start">Start</option><option value="end">End</option></select></dd>
         <dt class="col-6">Current turn's balance:</dt>
